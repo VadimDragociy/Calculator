@@ -1,5 +1,9 @@
+#include "Token.h"
+#include "Const_symbols.h"
+#include "Token_stream.h"
 #include "expression_reading.h"
 
+extern Token_stream ts;
 
 void calculate ()
 {
@@ -8,13 +12,11 @@ void calculate ()
     {
       
       Token t = ts.get();
-      while (t.kind == print ){
+      while (t.kind == print){
         
          t = ts.get();
       }
 
-        
-      
       if (t.kind == quitkostilb)
         return;
 
@@ -25,17 +27,18 @@ void calculate ()
     catch (runtime_error& e)
     {
       cerr << e.what() << endl;
-      clean_up_mess();
+      // clean_up_mess();
     }
 }
 
 int main () 
 try
 {
-  cout << "Можете начинать вводить выражения."<<endl
-          << "    Разрешены операции %,*,/,^,+,-"<<endl
-              <<"По завершении работы введите \"quit\""<<endl
-                  << "    В конце выражения введите \";\""<<endl;
+  setlocale(LC_ALL,"Rus");
+  cout << "You can start writing your math problem"<<endl
+          << "    Only %,*,/,^,+,- operators are allowed"<<endl
+              <<"When you finish, PLEASE, enter \"quit\""<<endl
+                  << "    At the end of your math problem, enter \";\""<<endl;
   define_name("pi", 3.141592653589793);//
   define_name("e", 2.718281828459045);
   define_name("k", 1000);
@@ -49,7 +52,7 @@ catch (exception& e)
 }
 catch (...)
 {
-  cerr << "Что-то пошло не так..." << endl;
+  cerr << "Smth went completely wrong..." << endl;
   return 2;
 }
 

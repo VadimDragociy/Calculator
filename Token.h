@@ -1,3 +1,4 @@
+#pragma once
 #include "std_lib_facilities.h"
 
 struct Token //класс для того, чтобы записывать лексемы

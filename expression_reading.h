@@ -1,108 +1,30 @@
-#include "Variables.h"
+#pragma once
+#include "std_lib_facilities.h"
 
-
-
-double primary () // приоритетные части выражения
+struct Variable //класс для реализации переменных
 {
-  Token t = ts.get();
-  switch (t.kind)
-  {
-  case '(':
-  {
-    double d = expression();
-    t = ts.get();
-    if (t.kind != ')')
-      error("В выражении не хватает закрывающей скобки");
-  }
+  string name;
+  double value;
 
-  case '-':
-    return -primary();
-  case '+':
-    return +primary();
+  Variable(string n, double v) : name{n}, value{v} {}
+};
 
-  case number:
-    return t.value;
+double primary();
 
-  case name:
-    return get_value(t.name);
+double term();
 
-  default:
-    error("primary expected");
-    
-  }
-}
+double expression ();
 
-double term ()
-{
-  double left = primary();
+double get_value (string s);
 
-  while (true)
-  {
-    Token t = ts.get();
+void set_value (string s, double d);
 
-    switch (t.kind)
-    {
-    case '*':
-      left *= primary();
-      break;
+bool is_declared (string s);
 
-    case '/':
-    {
-      double d = primary();
-      if (d == 0)
-        error("деление на ноль не определено");
-      left /= d;
-      break;
-    }
-    case '^':
-    {
-      double stepenb = primary();
-      if (stepenb ==0.5){
-        if (left <0)
-          error("комплексные числа не определены");
-          
-        left= sqrt(left);
-          
-      }
-      else{
-        if(double(int(stepenb))!=stepenb)
-          error("нецелые степени (кроме 0.5) не определены");
+double define_name (string var, double val);
 
-        left =pow(left,stepenb);
-      }
-      
-      break;
 
-    }
-      
-    default:
-      ts.putback(t);
-      return left;
-    }
-  }
-}
+double declaration ();
 
-double expression ()
-{
-  double left = term();
 
-  while (true)
-  {
-    Token t = ts.get();
-
-    switch (t.kind)
-    {
-    case '+':
-      left += term();
-      break;
-
-    case '-':
-      left -= term();
-      break;
-
-    default:
-      ts.putback(t);
-      return left;
-    }
-  }
-}
+double statement ();
